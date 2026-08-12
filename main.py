@@ -1,7 +1,7 @@
 import logging
 import joblib
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -67,7 +67,7 @@ async def about():
 
 @app.post("/predict")
 @limiter.limit("20/minute")
-async def predict_depression(student: Student):
+async def predict_depression(request: Request, student: Student):
     logger.info("Prediction request received")
 
     input_data = {
